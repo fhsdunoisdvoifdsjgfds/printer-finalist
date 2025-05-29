@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:printer_app/src/core/config/appsflyer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -30,7 +29,6 @@ class _OnboardScreenState extends State<OnboardScreen> {
 
   void onNext() async {
     if (index == 2) {
-      InAppReview.instance.requestReview();
       OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
       OneSignal.initialize("3910bd9d-2d92-4c2b-84d9-fb6913e515de");
       OneSignal.Notifications.requestPermission(true);

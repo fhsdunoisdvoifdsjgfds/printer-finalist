@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 import '../../../core/config/constants.dart';
 import '../../../core/models/vip.dart';
@@ -39,6 +40,9 @@ class VipBloc extends Bloc<VipEvent, Vip> {
           identifier =
               isFirstOrSecondShow ? Identifiers.paywall4 : Identifiers.paywall1;
           await _repository.saveShowCount(showCount + 1);
+          if (showCount == 2 || showCount == 4 || showCount == 6) {
+            InAppReview.instance.requestReview();
+          }
         } else {
           identifier = event.identifier;
         }
