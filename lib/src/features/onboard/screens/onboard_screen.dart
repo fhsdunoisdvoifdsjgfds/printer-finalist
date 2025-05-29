@@ -33,6 +33,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
       InAppReview.instance.requestReview();
       OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
       OneSignal.initialize("3910bd9d-2d92-4c2b-84d9-fb6913e515de");
+      OneSignal.Notifications.requestPermission(true);
     }
     if (index == 3) {
       final appsFlyerService = AppsFlyerService();
