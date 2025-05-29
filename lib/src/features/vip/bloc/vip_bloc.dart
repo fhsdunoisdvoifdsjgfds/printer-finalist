@@ -34,7 +34,8 @@ class VipBloc extends Bloc<VipEvent, Vip> {
         late String identifier;
         if (event.initial) {
           final showCount = _repository.getShowCount();
-          final isFirstOrSecondShow = showCount == 1 || showCount == 2;
+          final isFirstOrSecondShow =
+              showCount == 2 || showCount == 3 || showCount == 7;
           identifier =
               isFirstOrSecondShow ? Identifiers.paywall4 : Identifiers.paywall1;
           await _repository.saveShowCount(showCount + 1);
