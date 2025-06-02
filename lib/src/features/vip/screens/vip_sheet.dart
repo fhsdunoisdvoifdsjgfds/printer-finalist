@@ -21,7 +21,7 @@ class VipSheet extends StatefulWidget {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        isDismissible: true,
+        isDismissible: false,
         builder: (context) {
           return VipSheet(identifier: identifier);
         },
