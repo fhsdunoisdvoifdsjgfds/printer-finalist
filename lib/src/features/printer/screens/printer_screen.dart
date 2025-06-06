@@ -41,16 +41,23 @@ class PrinterScreen extends StatelessWidget {
                 title: 'Documents',
                 description: 'Print Documents from a File',
                 onPressed: () async {
-                  await pickFile().then(
-                    (value) {
-                      if (value != null && context.mounted) {
-                        context.push(
-                          DocumentsScreen.routePath,
-                          extra: value,
-                        );
-                      }
-                    },
-                  );
+                  if (isVip) {
+                    await pickFile().then(
+                      (value) {
+                        if (value != null && context.mounted) {
+                          context.push(
+                            DocumentsScreen.routePath,
+                            extra: value,
+                          );
+                        }
+                      },
+                    );
+                  } else {
+                    context.push(
+                      VipScreen.routePath,
+                      extra: Identifiers.paywall3,
+                    );
+                  }
                 },
               ),
               PrinterCard(
@@ -58,22 +65,29 @@ class PrinterScreen extends StatelessWidget {
                 title: 'Camera',
                 description: 'Make a photo and print',
                 onPressed: () async {
-                  if (await Permission.camera.status.isGranted) {
-                    await pickImage().then(
-                      (value) {
-                        if (value != null && context.mounted) {
-                          context.push(
-                            CameraScreen.routePath,
-                            extra: value,
-                          );
-                        }
-                      },
-                    );
-                  } else {
-                    final result = await Permission.camera.request();
-                    if (result.isPermanentlyDenied) {
-                      openAppSettings();
+                  if (isVip) {
+                    if (await Permission.camera.status.isGranted) {
+                      await pickImage().then(
+                        (value) {
+                          if (value != null && context.mounted) {
+                            context.push(
+                              CameraScreen.routePath,
+                              extra: value,
+                            );
+                          }
+                        },
+                      );
+                    } else {
+                      final result = await Permission.camera.request();
+                      if (result.isPermanentlyDenied) {
+                        openAppSettings();
+                      }
                     }
+                  } else {
+                    context.push(
+                      VipScreen.routePath,
+                      extra: Identifiers.paywall3,
+                    );
                   }
                 },
               ),
@@ -82,16 +96,12 @@ class PrinterScreen extends StatelessWidget {
                 title: 'Photo',
                 description: 'Print photos from gallery',
                 onPressed: () async {
-                  if (context.mounted) {
-                    context.push(PhotoScreen.routePath);
-                  }
-                  // if (await Permission.photos.status.isGranted) {
-                  // } else {
-                  //   final result = await Permission.photos.request();
-                  //   if (result.isPermanentlyDenied) {
-                  //     openAppSettings();
-                  //   }
-                  // }
+                  isVip
+                      ? context.push(PhotoScreen.routePath)
+                      : context.push(
+                          VipScreen.routePath,
+                          extra: Identifiers.paywall3,
+                        );
                 },
               ),
               PrinterCard(
@@ -99,14 +109,19 @@ class PrinterScreen extends StatelessWidget {
                 title: 'Email',
                 description: 'Print files from your email',
                 onPressed: () {
-                  context.push(EmailScreen.routePath);
+                  isVip
+                      ? context.push(EmailScreen.routePath)
+                      : context.push(
+                          VipScreen.routePath,
+                          extra: Identifiers.paywall3,
+                        );
                 },
               ),
               PrinterCard(
                 id: 5,
                 title: 'Web Pages',
                 description: 'Print any website in full size',
-                locked: true,
+                // locked: true,
                 onPressed: () {
                   isVip
                       ? context.push(WebPagesScreen.routePath)
@@ -120,7 +135,7 @@ class PrinterScreen extends StatelessWidget {
                 id: 6,
                 title: 'Printables',
                 description: 'Print giftcards, planners, calendars',
-                locked: true,
+                // locked: true,
                 onPressed: () {
                   isVip
                       ? context.push(PrintablesScreen.routePath)
