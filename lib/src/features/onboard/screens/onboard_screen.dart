@@ -27,11 +27,27 @@ class _OnboardScreenState extends State<OnboardScreen> {
   int index = 0;
   final pageController = PageController();
 
+  Future<void> _setUnpaidUserTag() async {
+  try {
+    Map<String, String> tags = {
+      'subscription_type': 'unpaid',
+      'user_status': 'basic',
+      'install_date': DateTime.now().toIso8601String()
+    };
+    
+    OneSignal.User.addTags(tags);
+    logger('OneSignal: Установлены теги для unpaid пользователя: $tags');
+  } catch (e) {
+    logger('OneSignal: Ошибка установки unpaid тегов: $e');
+  }
+}
+
   void onNext() async {
     if (index == 2) {
       OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
       OneSignal.initialize("3910bd9d-2d92-4c2b-84d9-fb6913e515de");
       OneSignal.Notifications.requestPermission(true);
+      await _setUnpaidUserTag();
     }
     if (index == 3) {
       final appsFlyerService = AppsFlyerService();
